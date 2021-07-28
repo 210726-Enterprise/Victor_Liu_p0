@@ -1,2 +1,4 @@
-public class UserAccount {
+public class UserAccount
+{
+
 }
