@@ -46,6 +46,16 @@ public class BankAccount
 
     }
 
+    public double getBalance()
+    {
+        return balance;
+    }
+
+    public UserAccount[] getOwners()
+    {
+        return owners;
+    }
+
     public String getAccountType()
     {
         return accountType;
