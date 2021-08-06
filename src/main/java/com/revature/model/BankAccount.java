@@ -1,5 +1,7 @@
-import BankExceptions.NegativeAmountException;
-import BankExceptions.OverdraftException;
+package com.revature.model;
+
+import com.revature.bankexceptions.NegativeAmountException;
+import com.revature.bankexceptions.OverdraftException;
 
 public class BankAccount
 {
