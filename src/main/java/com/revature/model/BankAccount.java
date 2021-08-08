@@ -2,14 +2,15 @@ package com.revature.model;
 
 import com.revature.bankexceptions.NegativeAmountException;
 import com.revature.bankexceptions.OverdraftException;
+import com.revature.collection.RevArrayList;
 
 public class BankAccount
 {
-    private UserAccount[] owners;
+    private RevArrayList<UserAccount> owners;
     private double balance;
     private String accountType;
 
-    public BankAccount(UserAccount[] owners, double balance, String accountType)
+    public BankAccount(RevArrayList<UserAccount> owners, double balance, String accountType)
     {
         this.owners = owners;
         this.balance = balance;
@@ -53,7 +54,7 @@ public class BankAccount
         return balance;
     }
 
-    public UserAccount[] getOwners()
+    public RevArrayList<UserAccount> getOwners()
     {
         return owners;
     }

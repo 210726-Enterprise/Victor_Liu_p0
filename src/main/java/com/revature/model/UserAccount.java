@@ -2,14 +2,15 @@ package com.revature.model;
 
 import com.revature.bankexceptions.NegativeAmountException;
 import com.revature.bankexceptions.OverdraftException;
+import com.revature.collection.RevArrayList;
 
 public class UserAccount
 {
     private String username;
     private String password;
-    private BankAccount[] accounts;
+    private RevArrayList<BankAccount> accounts;
 
-    public UserAccount(String username, String password, BankAccount[] accounts)
+    public UserAccount(String username, String password, RevArrayList<BankAccount> accounts)
     {
         this.username = username;
         this.password = password;
@@ -25,39 +26,21 @@ public class UserAccount
 
     public BankAccount getAccount(int accountNumber)
     {
-        return accounts[accountNumber];
+        return accounts.get(accountNumber);
+    }
+
+    public void addAccount(BankAccount newAccount)
+    {
+        accounts.add(newAccount);
+    }
+
+    public void removeAccount(BankAccount oldAccount)
+    {
+        accounts.remove(oldAccount);
     }
 
     public double getBalanceOfAccount(int accountNumber)
     {
         return getAccount(accountNumber).getBalance();
-    }
-
-    public void depositIntoAccount(double amount, int accountNumber)
-    {
-        try
-        {
-            accounts[accountNumber].deposit(amount);
-        }
-        catch (NegativeAmountException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void withdrawFromAccount(double amount, int accountNumber)
-    {
-        try
-        {
-            accounts[accountNumber].withdraw(amount);
-        }
-        catch (NegativeAmountException e)
-        {
-            e.printStackTrace();
-        }
-        catch (OverdraftException e)
-        {
-            e.printStackTrace();
-        }
     }
 }
