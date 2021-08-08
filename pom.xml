@@ -13,4 +13,19 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.23</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.revature</groupId>
+            <artifactId>enterprise_collections</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+
 </project>
