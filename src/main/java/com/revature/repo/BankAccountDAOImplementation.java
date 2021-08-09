@@ -17,7 +17,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     {
         Connection connection = ConnectionFactory.getConnection();
 
-        String sqlStatement = "insert into \"Bank Accounts\" (\"BankID\", \"Account Type\", \"Balance\", \"UserID\") values (?)";
+        String sqlStatement = "insert into \"Bank Accounts\" (\"Account Type\", \"Balance\") values (?)";
 
         PreparedStatement preparedStatement;
 
@@ -25,10 +25,8 @@ public class BankAccountDAOImplementation implements BankAccountDAO
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
 
-            preparedStatement.setInt(1, account.getId());
-            preparedStatement.setString(2, account.getAccountType());
-            preparedStatement.setDouble(3, account.getBalance());
-            preparedStatement.setInt(4, account.getOwners().get(0).getId());
+            preparedStatement.setString(1, account.getAccountType());
+            preparedStatement.setDouble(2, account.getBalance());
 
             preparedStatement.execute();
 
@@ -79,11 +77,11 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     {
         Connection connection = ConnectionFactory.getConnection();
 
-        String sqlStatement = "select * from \"Bank Accounts\" ba where \"UserID\" = (?)";
+        String sqlStatement = "select * from \"Bank Accounts\" ba inner join \"Bank User Junction\" buj on ba.\"BankID\" = buj.\"BankID\" and buj.\"UserID\" = (?)";
 
         PreparedStatement preparedStatement;
 
-        RevArrayList<BankAccount> bankAccountList;
+        RevArrayList<BankAccount> bankAccountList = new RevArrayList<>();
 
         try
         {
@@ -97,8 +95,8 @@ public class BankAccountDAOImplementation implements BankAccountDAO
                 BankAccount newAccount = new BankAccount(
                         results.getInt("BankId"),
                         results.getString("Account Type"),
-                        results.getDouble("Balance"),
-                        results.getInt("UserId"));
+                        results.getDouble("Balance"));
+                bankAccountList.add(newAccount);
             }
 
             connection.close();
@@ -108,7 +106,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return bankAccountList;
     }
 
     @Override
