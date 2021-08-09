@@ -44,7 +44,8 @@ public class UserAccount
         return getAccount(accountNumber).getBalance();
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 }
