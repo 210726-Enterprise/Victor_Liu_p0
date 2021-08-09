@@ -9,7 +9,7 @@ public class BankAccount
     private RevArrayList<UserAccount> owners;
     private double balance;
     private String accountType;
-    private int id;
+    private final int id;
 
     public BankAccount(RevArrayList<UserAccount> owners, double balance, String accountType, int id)
     {
@@ -64,5 +64,10 @@ public class BankAccount
     public String getAccountType()
     {
         return accountType;
+    }
+
+    public int getId()
+    {
+        return id;
     }
 }

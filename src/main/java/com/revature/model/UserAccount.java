@@ -7,7 +7,7 @@ public class UserAccount
     private String username;
     private String password;
     private RevArrayList<BankAccount> accounts;
-    private int id;
+    private final int id;
 
     public UserAccount(String username, String password, RevArrayList<BankAccount> accounts, int id)
     {
@@ -42,5 +42,9 @@ public class UserAccount
     public double getBalanceOfAccount(int accountNumber)
     {
         return getAccount(accountNumber).getBalance();
+    }
+
+    public int getId() {
+        return id;
     }
 }
