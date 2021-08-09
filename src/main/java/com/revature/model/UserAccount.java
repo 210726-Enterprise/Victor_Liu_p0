@@ -24,6 +24,16 @@ public class UserAccount
         return false;
     }
 
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
     public BankAccount getAccount(int accountNumber)
     {
         return accounts.get(accountNumber);
