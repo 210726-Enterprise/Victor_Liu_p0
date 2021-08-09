@@ -41,12 +41,12 @@ public class BankAccount
 
     public void addOwner(UserAccount owner)
     {
-
+        owners.add(owner);
     }
 
     public void removeOwner(UserAccount owner)
     {
-
+        owners.remove(owner);
     }
 
     public double getBalance()
