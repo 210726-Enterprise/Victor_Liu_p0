@@ -2,18 +2,28 @@ package com.revature.model;
 
 import com.revature.bankexceptions.NegativeAmountException;
 import com.revature.bankexceptions.OverdraftException;
+import com.revature.collection.HashSet.RevaHashSet;
 import com.revature.collection.RevArrayList;
 
 public class BankAccount
 {
-    private RevArrayList<UserAccount> owners;
+    private RevaHashSet<UserAccount> owners;
     private double balance;
     private String accountType;
     private final int id;
 
-    public BankAccount(RevArrayList<UserAccount> owners, double balance, String accountType, int id)
+    public BankAccount(int id, String accountType, double balance, RevaHashSet<UserAccount> owners)
     {
         this.owners = owners;
+        this.balance = balance;
+        this.accountType = accountType;
+        this.id = id;
+    }
+
+    public BankAccount(int id, String accountType, double balance, UserAccount owner)
+    {
+        this.owners = new RevaHashSet<>();
+        this.owners.add(owner);
         this.balance = balance;
         this.accountType = accountType;
         this.id = id;
