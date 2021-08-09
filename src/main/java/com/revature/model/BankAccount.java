@@ -29,6 +29,15 @@ public class BankAccount
         this.id = id;
     }
 
+    public BankAccount(int id, String accountType, double balance)
+    {
+        this.owners = new RevaHashSet<>();
+        this.owners = null;
+        this.balance = balance;
+        this.accountType = accountType;
+        this.id = id;
+    }
+
     public void deposit(double amount) throws NegativeAmountException
     {
         if(amount < 0)
