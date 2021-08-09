@@ -9,12 +9,14 @@ public class BankAccount
     private RevArrayList<UserAccount> owners;
     private double balance;
     private String accountType;
+    private int id;
 
-    public BankAccount(RevArrayList<UserAccount> owners, double balance, String accountType)
+    public BankAccount(RevArrayList<UserAccount> owners, double balance, String accountType, int id)
     {
         this.owners = owners;
         this.balance = balance;
         this.accountType = accountType;
+        this.id = id;
     }
 
     public void deposit(double amount) throws NegativeAmountException

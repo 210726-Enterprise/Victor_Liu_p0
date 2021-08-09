@@ -1,7 +1,5 @@
 package com.revature.model;
 
-import com.revature.bankexceptions.NegativeAmountException;
-import com.revature.bankexceptions.OverdraftException;
 import com.revature.collection.RevArrayList;
 
 public class UserAccount
@@ -9,12 +7,14 @@ public class UserAccount
     private String username;
     private String password;
     private RevArrayList<BankAccount> accounts;
+    private int id;
 
-    public UserAccount(String username, String password, RevArrayList<BankAccount> accounts)
+    public UserAccount(String username, String password, RevArrayList<BankAccount> accounts, int id)
     {
         this.username = username;
         this.password = password;
         this.accounts = accounts;
+        this.id = id;
     }
 
     public boolean verifyCredentials(String username, String password)
