@@ -12,22 +12,24 @@ import java.sql.SQLException;
 public class BankAccountDAOImplementation implements BankAccountDAO
 {
     @Override
-    public void insertBankAccount(BankAccount account)
+    public void insertBankAccount(BankAccount account, int ownerId)
     {
-        String sqlStatement = "insert into \"Bank Accounts\" (\"Account Type\", \"Balance\") values (?)";
+        String sqlStatement1 = "insert into \"Bank Accounts\" (\"Account Type\", \"Balance\") values (?)";
+        String sqlStatement2 = "insert into \"Bank User Junction\" (\"BankID\", \"UserID\") values (?)";
 
         PreparedStatement preparedStatement;
 
         try(Connection connection = ConnectionFactory.getConnection())
         {
-            preparedStatement = connection.prepareStatement(sqlStatement);
-
+            preparedStatement = connection.prepareStatement(sqlStatement1);
             preparedStatement.setString(1, account.getAccountType());
             preparedStatement.setDouble(2, account.getBalance());
-
             preparedStatement.execute();
 
-            connection.close();
+            preparedStatement = connection.prepareStatement(sqlStatement2);
+            preparedStatement.setInt(1, account.getId());
+            preparedStatement.setInt(2, ownerId);
+            preparedStatement.execute();
         }
         catch (SQLException e)
         {
@@ -53,8 +55,6 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             preparedStatement = connection.prepareStatement(sqlStatement1);
             preparedStatement.setInt(1, account.getId());
             preparedStatement.execute();
-
-            connection.close();
         }
 
         catch (SQLException e)
@@ -67,13 +67,38 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     @Override
     public BankAccount getBankAccount(BankAccount account)
     {
-        return account;
+        String sqlStatement = "select * from \"Bank Accounts\" ba where \"BankID\" = (?)";
+
+        PreparedStatement preparedStatement;
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+
+            preparedStatement.setInt(1, account.getId());
+
+            ResultSet results = preparedStatement.executeQuery();
+            BankAccount newAccount = new BankAccount(
+                    results.getInt("BankId"),
+                    results.getString("Account Type"),
+                    results.getDouble("Balance"));
+
+            return newAccount;
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public RevArrayList<BankAccount> getAllBankAccounts(int ownerId)
     {
-        String sqlStatement = "select * from \"Bank Accounts\" ba inner join \"Bank User Junction\" buj on ba.\"BankID\" = buj.\"BankID\" and buj.\"UserID\" = (?)";
+        String sqlStatement = "select * from \"Bank Accounts\" ba " +
+                "inner join \"Bank User Junction\" buj " +
+                "on ba.\"BankID\" = buj.\"BankID\" and buj.\"UserID\" = (?)";
 
         PreparedStatement preparedStatement;
 
@@ -94,8 +119,6 @@ public class BankAccountDAOImplementation implements BankAccountDAO
                         results.getDouble("Balance"));
                 bankAccountList.add(newAccount);
             }
-
-            connection.close();
         }
         catch (SQLException e)
         {
@@ -108,7 +131,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     @Override
     public void updateBankAccount(BankAccount account)
     {
-        String sql = "UPDATE \"Bank Accounts\" SET Balance = ? where BankID = ?";
+        String sql = "update \"Bank Accounts\" set Balance = ? where BankID = ?";
 
         try(Connection connection = ConnectionFactory.getConnection())
         {

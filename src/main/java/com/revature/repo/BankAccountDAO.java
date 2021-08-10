@@ -5,7 +5,7 @@ import com.revature.model.BankAccount;
 
 public interface BankAccountDAO
 {
-    void insertBankAccount(BankAccount account);
+    void insertBankAccount(BankAccount account, int ownerId);
 
     void deleteBankAccount(BankAccount account);
 
