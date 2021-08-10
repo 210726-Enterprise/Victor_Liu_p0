@@ -59,7 +59,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
         }
     }
 
-    @Override
+    @Deprecated
     public UserAccount getUserAccount(UserAccount account)
     {
         String sqlStatement = "select * from \"User Accounts\" ua where \"UserID\" = (?)";

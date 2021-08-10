@@ -64,7 +64,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
         }
     }
 
-    @Override
+    @Deprecated
     public BankAccount getBankAccount(BankAccount account)
     {
         String sqlStatement = "select * from \"Bank Accounts\" ba where \"BankID\" = (?)";
