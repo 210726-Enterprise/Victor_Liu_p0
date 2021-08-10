@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class ConnectionFactory
 {
     // TODO: change to system environment variables
-    private static final String URL = "jdbc:postgresql://project0.c4c3no36zu7c.us-east-2.rds.amazonaws.com/project0";
+    private static final String URL = "jdbc:postgresql://project0.c4c3no36zu7c.us-east-2.rds.amazonaws.com/postgres";
     private static final String USERNAME = "cptvictor";
     private static final String PASSWORD = "welpSenior113";
 
