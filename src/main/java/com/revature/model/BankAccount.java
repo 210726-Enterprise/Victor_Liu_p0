@@ -75,7 +75,7 @@ public class BankAccount
         return balance;
     }
 
-    public RevArrayList<UserAccount> getOwners()
+    public RevaHashSet<UserAccount> getOwners()
     {
         return owners;
     }
