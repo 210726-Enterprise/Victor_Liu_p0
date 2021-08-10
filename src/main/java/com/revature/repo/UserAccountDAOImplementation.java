@@ -69,8 +69,37 @@ public class UserAccountDAOImplementation implements UserAccountDAO
         try(Connection connection = ConnectionFactory.getConnection())
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, account.getId());
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            UserAccount newUserAccount = new UserAccount(
+                    resultSet.getInt("UserID"),
+                    resultSet.getString("Username"),
+                    resultSet.getString("Password"));
+            return newUserAccount;
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public UserAccount getUserAccount(String username)
+    {
+        String sqlStatement = "select * from \"User Accounts\" ua where \"Username\" = (?)";
+
+        PreparedStatement preparedStatement;
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             UserAccount newUserAccount = new UserAccount(
                     resultSet.getInt("UserID"),
                     resultSet.getString("Username"),

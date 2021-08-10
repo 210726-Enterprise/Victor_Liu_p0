@@ -10,5 +10,7 @@ public interface UserAccountDAO
 
     UserAccount getUserAccount(UserAccount account);
 
+    UserAccount getUserAccount(String username);
+
     void updateUserAccount(UserAccount account);
 }
