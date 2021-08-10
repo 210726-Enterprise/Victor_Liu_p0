@@ -9,8 +9,6 @@ public interface BankAccountDAO
 
     void deleteBankAccount(BankAccount account);
 
-    BankAccount getBankAccount(BankAccount account);
-
     RevArrayList<BankAccount> getAllBankAccounts(int ownerId);
 
     void updateBankAccount(BankAccount account);
