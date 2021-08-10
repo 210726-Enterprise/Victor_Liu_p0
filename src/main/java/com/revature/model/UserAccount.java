@@ -9,11 +9,19 @@ public class UserAccount
     private RevArrayList<BankAccount> accounts;
     private final int id;
 
-    public UserAccount(String username, String password, RevArrayList<BankAccount> accounts, int id)
+    public UserAccount(int id, String username, String password, RevArrayList<BankAccount> accounts)
     {
         this.username = username;
         this.password = password;
         this.accounts = accounts;
+        this.id = id;
+    }
+
+    public UserAccount(int id, String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+        this.accounts = new RevArrayList<>();
         this.id = id;
     }
 
