@@ -25,6 +25,14 @@ public class UserAccount
         this.id = id;
     }
 
+    public UserAccount(String username, String password)
+    {
+        this.username = username;
+        this.password = password;
+        this.accounts = new RevArrayList<>();
+        this.id = 0;
+    }
+
     public boolean verifyCredentials(String username, String password)
     {
         if(username.equals(this.username) && password.equals(this.password))
