@@ -13,7 +13,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public void insertUserAccount(UserAccount account)
     {
-        String sqlStatement = "insert into \"User Accounts\" (\"Username\", \"Password\") values (?)";
+        String sqlStatement = "insert into \"User Accounts\" (\"Username\", \"Password\") values (?,?)";
 
         PreparedStatement preparedStatement;
 
@@ -99,12 +99,14 @@ public class UserAccountDAOImplementation implements UserAccountDAO
             preparedStatement.setString(1, username);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            UserAccount newUserAccount = new UserAccount(
-                    resultSet.getInt("UserID"),
-                    resultSet.getString("Username"),
-                    resultSet.getString("Password"));
-            return newUserAccount;
+            if(resultSet.next())
+            {
+                UserAccount newUserAccount = new UserAccount(
+                        resultSet.getInt("UserID"),
+                        resultSet.getString("Username"),
+                        resultSet.getString("Password"));
+                return newUserAccount;
+            }
         }
         catch (SQLException e)
         {

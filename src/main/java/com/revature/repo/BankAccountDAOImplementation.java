@@ -14,8 +14,9 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     @Override
     public void insertBankAccount(BankAccount account, int ownerId)
     {
-        String sqlStatement1 = "insert into \"Bank Accounts\" (\"Account Type\", \"Balance\") values (?)";
-        String sqlStatement2 = "insert into \"Bank User Junction\" (\"BankID\", \"UserID\") values (?)";
+        String sqlStatement1 = "insert into \"Bank Accounts\" (\"Account Type\", \"Balance\") values (?,?)";
+        String sqlStatement2 = "insert into \"Bank User Junction\" (\"BankID\", \"UserID\") values (?,?)";
+        String sqlStatement3 = "select last_value from \"Bank Accounts_BankID_seq\"";
 
         PreparedStatement preparedStatement;
 
@@ -26,8 +27,16 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             preparedStatement.setDouble(2, account.getBalance());
             preparedStatement.execute();
 
+            preparedStatement = connection.prepareStatement(sqlStatement3);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int bankId = 0;
+            if(resultSet.next())
+            {
+                bankId = resultSet.getInt("last_value");
+            }
+
             preparedStatement = connection.prepareStatement(sqlStatement2);
-            preparedStatement.setInt(1, account.getId());
+            preparedStatement.setInt(1, bankId);
             preparedStatement.setInt(2, ownerId);
             preparedStatement.execute();
         }
@@ -77,13 +86,15 @@ public class BankAccountDAOImplementation implements BankAccountDAO
 
             preparedStatement.setInt(1, account.getId());
 
-            ResultSet results = preparedStatement.executeQuery();
-            BankAccount newAccount = new BankAccount(
-                    results.getInt("BankId"),
-                    results.getString("Account Type"),
-                    results.getDouble("Balance"));
-
-            return newAccount;
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                BankAccount newAccount = new BankAccount(
+                        resultSet.getInt("BankId"),
+                        resultSet.getString("Account Type"),
+                        resultSet.getDouble("Balance"));
+                return newAccount;
+            }
         }
         catch (SQLException e)
         {
@@ -131,7 +142,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
     @Override
     public void updateBankAccount(BankAccount account)
     {
-        String sql = "update \"Bank Accounts\" set Balance = ? where BankID = ?";
+        String sql = "update \"Bank Accounts\" set \"Balance\" = ? where \"BankID\" = ?";
 
         try(Connection connection = ConnectionFactory.getConnection())
         {
