@@ -8,6 +8,9 @@ import com.revature.model.UserAccount;
 import com.revature.repo.BankAccountDAO;
 import com.revature.repo.BankAccountDAOImplementation;
 
+/**
+ * Implementation of the BankServices interface
+ */
 public class BankServicesImplementation implements BankServices
 {
     private static BankAccountDAO bankAccountDAO = new BankAccountDAOImplementation();
@@ -65,11 +68,6 @@ public class BankServicesImplementation implements BankServices
     public void addOwner(BankAccount account, UserAccount newOwner)
     {
         bankAccountDAO.addOwner(account, newOwner);
-    }
-
-    @Override
-    public void viewTransactionHistory(BankAccount account) {
-
     }
 
     @Override

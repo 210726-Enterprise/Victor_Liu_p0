@@ -8,6 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * implementation of a data access object for user accounts
+ */
 public class UserAccountDAOImplementation implements UserAccountDAO
 {
     @Override

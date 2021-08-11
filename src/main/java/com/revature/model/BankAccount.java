@@ -5,6 +5,9 @@ import com.revature.bankexceptions.OverdraftException;
 import com.revature.collection.HashSet.RevaHashSet;
 import com.revature.collection.RevArrayList;
 
+/**
+ * models a bank account
+ */
 public class BankAccount
 {
     private String accountNumber;
@@ -26,31 +29,55 @@ public class BankAccount
         this.name = name;
     }
 
+    /**
+     * gets for the current balance
+     * @return the current account balance
+     */
     public double getBalance()
     {
         return balance;
     }
 
+    /**
+     * changes the account balance
+     * @param balance the new balance
+     */
     public void setBalance(double balance)
     {
         this.balance = balance;
     }
 
+    /**
+     * gets the account number
+     * @return the number of the account
+     */
     public String getAccountNumber()
     {
         return accountNumber;
     }
 
+    /**
+     * gets the routing number
+     * @return the routing number of the account
+     */
     public String getRoutingNumber()
     {
         return routingNumber;
     }
 
+    /**
+     * gets the account type
+     * @return the type of the account
+     */
     public String getAccountType()
     {
         return accountType;
     }
 
+    /**
+     * gets the name of the account
+     * @return the name of the account
+     */
     public String getName()
     {
         return name;

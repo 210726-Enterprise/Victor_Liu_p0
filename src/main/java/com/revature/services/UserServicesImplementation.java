@@ -4,6 +4,9 @@ import com.revature.model.UserAccount;
 import com.revature.repo.UserAccountDAO;
 import com.revature.repo.UserAccountDAOImplementation;
 
+/**
+ * implementation of the UserServices interface
+ */
 public class UserServicesImplementation implements UserServices
 {
     private static UserAccountDAO userAccountDAO = new UserAccountDAOImplementation();

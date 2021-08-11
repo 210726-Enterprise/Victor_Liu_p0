@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * a utility class for handling connections to the database
+ */
 public class ConnectionFactory
 {
     // TODO: change to system environment variables
@@ -13,6 +16,10 @@ public class ConnectionFactory
 
     private static Connection connection;
 
+    /**
+     * gets a connection to the database
+     * @return the connection to the database
+     */
     public static Connection getConnection()
     {
         try
