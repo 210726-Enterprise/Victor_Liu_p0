@@ -117,6 +117,58 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     }
 
     @Override
+    public boolean findUser(String username)
+    {
+        String sqlStatement = "select \"Username\" from \"User Accounts\" ua where \"Username\" = (?)";
+
+        PreparedStatement preparedStatement;
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next())
+            {
+                return true;
+            }
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean verifyLogin(String username, String password)
+    {
+        String sqlStatement = "select \"Password\" from \"User Accounts\" ua where \"Username\" = (?)";
+
+        PreparedStatement preparedStatement;
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next() && resultSet.getString(1).equals(password))
+            {
+                return true;
+            }
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public void updateUserAccount(UserAccount account)
     {
         String sqlStatement = "update \"User Accounts\" set \"Username\" = (?), \"Password\" = (?) where \"UserID\" = (?)";

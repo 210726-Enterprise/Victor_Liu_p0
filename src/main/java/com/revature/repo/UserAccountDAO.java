@@ -10,5 +10,9 @@ public interface UserAccountDAO
 
     UserAccount getUserAccount(String username);
 
+    boolean findUser(String username);
+
+    boolean verifyLogin(String username, String password);
+
     void updateUserAccount(UserAccount account);
 }
