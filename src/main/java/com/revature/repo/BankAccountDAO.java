@@ -11,5 +11,7 @@ public interface BankAccountDAO
 
     RevArrayList<BankAccount> getAllBankAccounts(int ownerId);
 
+    BankAccount getBankAccount(int bankId);
+
     void updateBankAccount(BankAccount account);
 }

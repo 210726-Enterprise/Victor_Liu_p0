@@ -1,5 +1,6 @@
 package com.revature.repo;
 
+import com.revature.bankexceptions.NegativeAmountException;
 import com.revature.collection.RevArrayList;
 import com.revature.model.BankAccount;
 import com.revature.util.ConnectionFactory;
@@ -89,11 +90,18 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                BankAccount newAccount = new BankAccount(
-                        resultSet.getInt("BankId"),
-                        resultSet.getString("Account Type"),
-                        resultSet.getDouble("Balance"));
-                return newAccount;
+                try
+                {
+                    BankAccount newAccount = new BankAccount(
+                            resultSet.getInt("BankId"),
+                            resultSet.getString("Account Type"),
+                            resultSet.getDouble("Balance"));
+                    return newAccount;
+                }
+                catch (NegativeAmountException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
         catch (SQLException e)
@@ -124,11 +132,63 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             ResultSet results = preparedStatement.executeQuery();
             while(results.next())
             {
-                BankAccount newAccount = new BankAccount(
-                        results.getInt("BankId"),
-                        results.getString("Account Type"),
-                        results.getDouble("Balance"));
-                bankAccountList.add(newAccount);
+                try
+                {
+                    BankAccount newAccount = new BankAccount(
+                            results.getInt("BankId"),
+                            results.getString("Account Type"),
+                            results.getDouble("Balance"));
+                    bankAccountList.add(newAccount);
+                }
+                catch (NegativeAmountException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return bankAccountList;
+    }
+
+    @Override
+    public BankAccount getBankAccount(int bankId)
+    {
+        String sqlStatement = "select * from \"Bank Accounts\" ba " +
+                "inner join \"Bank User Junction\" buj " +
+                "on ba.\"BankID\" = buj.\"BankID\" and buj.\"UserID\" = (?)";
+
+        PreparedStatement preparedStatement;
+
+        RevArrayList<BankAccount> bankAccountList = new RevArrayList<>();
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            preparedStatement = connection.prepareStatement(sqlStatement);
+
+            preparedStatement.setInt(1, ownerId);
+
+            ResultSet results = preparedStatement.executeQuery();
+            while(results.next())
+            {
+                try
+                {
+                    BankAccount newAccount = new BankAccount(
+                            results.getInt("BankId"),
+                            results.getString("Account Type"),
+                            results.getDouble("Balance"),
+                            results.getString("name"));
+                    bankAccountList.add(newAccount);
+                }
+                catch (NegativeAmountException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
         catch (SQLException e)
