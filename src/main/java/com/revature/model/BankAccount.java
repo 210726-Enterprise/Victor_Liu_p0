@@ -7,94 +7,19 @@ import com.revature.collection.RevArrayList;
 
 public class BankAccount
 {
-    private RevaHashSet<UserAccount> owners;
+    private String accountNumber;
+    private String routingNumber;
     private double balance;
     private String accountType;
-    private final int id;
     private String name;
 
-    public BankAccount(int id, String accountType, double balance, RevaHashSet<UserAccount> owners, String name) throws NegativeAmountException
+    public BankAccount(String accountNumber, String routingNumber, double balance, String accountType, String name)
     {
-        if(balance < 0)
-        {
-            throw new NegativeAmountException();
-        }
-        else
-        {
-            this.balance = balance;
-        }
-        this.owners = owners;
+        this.accountNumber = accountNumber;
+        this.routingNumber = routingNumber;
         this.balance = balance;
         this.accountType = accountType;
-        this.id = id;
         this.name = name;
-    }
-
-    public BankAccount(int id, String accountType, double balance, UserAccount owner, String name) throws NegativeAmountException
-    {
-        if(balance < 0)
-        {
-            throw new NegativeAmountException();
-        }
-        else
-        {
-            this.balance = balance;
-        }
-        this.owners = new RevaHashSet<>();
-        this.owners.add(owner);
-        this.balance = balance;
-        this.accountType = accountType;
-        this.id = id;
-        this.name = name;
-    }
-
-    public BankAccount(int id, String accountType, double balance, String name) throws NegativeAmountException
-    {
-        if(balance < 0)
-        {
-            throw new NegativeAmountException();
-        }
-        else
-        {
-            this.balance = balance;
-        }
-        this.owners = new RevaHashSet<>();
-        this.owners = null;
-        this.accountType = accountType;
-        this.id = id;
-        this.name = name;
-    }
-
-    public BankAccount(String accountType, double balance, String name) throws NegativeAmountException
-    {
-        if(balance < 0)
-        {
-            throw new NegativeAmountException();
-        }
-        else
-        {
-            this.balance = balance;
-        }
-        this.owners = new RevaHashSet<>();
-        this.owners = null;
-        this.accountType = accountType;
-        this.id = 0;
-        this.name = name;
-    }
-
-    public void setBalance(double balance)
-    {
-        this.balance = balance;
-    }
-
-    public void addOwner(UserAccount owner)
-    {
-        owners.add(owner);
-    }
-
-    public void removeOwner(UserAccount owner)
-    {
-        owners.remove(owner);
     }
 
     public double getBalance()
@@ -102,9 +27,19 @@ public class BankAccount
         return balance;
     }
 
-    public RevaHashSet<UserAccount> getOwners()
+    public void setBalance(double balance)
     {
-        return owners;
+        this.balance = balance;
+    }
+
+    public String getAccountNumber()
+    {
+        return accountNumber;
+    }
+
+    public String getRoutingNumber()
+    {
+        return routingNumber;
     }
 
     public String getAccountType()
@@ -112,16 +47,8 @@ public class BankAccount
         return accountType;
     }
 
-    public int getId()
+    public String getName()
     {
-        return id;
-    }
-
-    public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

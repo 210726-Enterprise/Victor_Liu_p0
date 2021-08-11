@@ -41,9 +41,9 @@ public class BankServicesImplementation implements BankServices
     public void transfer(BankAccount accountToWithdraw, BankAccount accountToDeposit, double amount) throws NegativeAmountException, OverdraftException
     {
         if(amount < 0)
-    {
-        throw new NegativeAmountException();
-    }
+        {
+            throw new NegativeAmountException();
+        }
         if(accountToWithdraw.getBalance() - amount < 0)
         {
             throw new OverdraftException();

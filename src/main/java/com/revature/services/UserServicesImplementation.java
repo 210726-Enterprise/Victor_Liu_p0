@@ -17,12 +17,18 @@ public class UserServicesImplementation implements UserServices
     @Override
     public boolean verifyPassword(String username, String password)
     {
-        userAccountDAO.verifyLogin(username, password);
+        return userAccountDAO.verifyLogin(username, password);
     }
 
     @Override
     public UserAccount getUser(String username)
     {
         return userAccountDAO.getUserAccount(username);
+    }
+
+    @Override
+    public void addUser(UserAccount account)
+    {
+        userAccountDAO.insertUserAccount(account);
     }
 }

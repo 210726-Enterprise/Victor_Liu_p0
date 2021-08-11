@@ -9,4 +9,6 @@ public interface UserServices
     boolean verifyPassword(String username, String password);
 
     UserAccount getUser(String username);
+
+    void addUser(UserAccount account);
 }
