@@ -30,7 +30,7 @@ public class UserAccount
         this.username = username;
         this.password = password;
         this.accounts = new RevArrayList<>();
-        this.id = 0;
+        this.id = -1;
     }
 
     public boolean verifyCredentials(String username, String password)
