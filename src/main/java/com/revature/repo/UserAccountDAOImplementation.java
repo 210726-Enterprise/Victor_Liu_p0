@@ -36,8 +36,8 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public void deleteUserAccount(UserAccount account)
     {
-        String sqlStatement1 = "delete from \"User Accounts\" where \"Username\" = (?)";
-        String sqlStatement2 = "delete from \"Bank User Junction\" where \"Username\" = (?)";
+        String sqlStatement1 = "delete from \"User Accounts\" where \"Username\" = ?";
+        String sqlStatement2 = "delete from \"Bank User Junction\" where \"Username\" = ?";
 
         PreparedStatement preparedStatement;
 
@@ -62,7 +62,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public UserAccount getUserAccount(String username)
     {
-        String sqlStatement = "select * from \"User Accounts\" ua where \"Username\" = (?)";
+        String sqlStatement = "select * from \"User Accounts\" ua where \"Username\" = ?";
 
         PreparedStatement preparedStatement;
 
@@ -91,7 +91,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public boolean findUser(String username)
     {
-        String sqlStatement = "select \"Username\" from \"User Accounts\" ua where \"Username\" = (?)";
+        String sqlStatement = "select \"Username\" from \"User Accounts\" ua where \"Username\" = ?";
 
         PreparedStatement preparedStatement;
 
@@ -108,7 +108,6 @@ public class UserAccountDAOImplementation implements UserAccountDAO
         }
         catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return false;
@@ -117,7 +116,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public boolean verifyLogin(String username, String password)
     {
-        String sqlStatement = "select \"Password\" from \"User Accounts\" ua where \"Username\" = (?)";
+        String sqlStatement = "select \"Password\" from \"User Accounts\" ua where \"Username\" = ?";
 
         PreparedStatement preparedStatement;
 
@@ -127,6 +126,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
             preparedStatement.setString(1, username);
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
             if(resultSet.next() && resultSet.getString(1).equals(password))
             {
                 return true;
@@ -143,7 +143,7 @@ public class UserAccountDAOImplementation implements UserAccountDAO
     @Override
     public void updateUserAccount(UserAccount account)
     {
-        String sqlStatement = "update \"User Accounts\" set \"Username\" = (?), \"Password\" = (?) where \"Username\" = (?)";
+        String sqlStatement = "update \"User Accounts\" set \"Username\" = ?, \"Password\" = ? where \"Username\" = ?";
 
         PreparedStatement preparedStatement;
 

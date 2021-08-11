@@ -13,11 +13,15 @@ public class BankAccount
     private String accountType;
     private String name;
 
-    public BankAccount(String accountNumber, String routingNumber, double balance, String accountType, String name)
+    public BankAccount(String accountNumber, String routingNumber, double balance, String accountType, String name) throws NegativeAmountException
     {
+        if(balance < 0)
+        {
+            throw new NegativeAmountException();
+        }
+        this.balance = balance;
         this.accountNumber = accountNumber;
         this.routingNumber = routingNumber;
-        this.balance = balance;
         this.accountType = accountType;
         this.name = name;
     }

@@ -12,7 +12,7 @@ public interface BankAccountDAO
 
     void deleteBankAccount(BankAccount account);
 
-    RevArrayList<BankAccount> getAllBankAccounts(int ownerId);
+    RevArrayList<BankAccount> getAllBankAccounts(UserAccount owner);
 
     void updateBankAccount(BankAccount account);
 }

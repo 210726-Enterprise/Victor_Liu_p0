@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.bankexceptions.NegativeAmountException;
 import com.revature.bankexceptions.OverdraftException;
+import com.revature.collection.RevArrayList;
 import com.revature.model.BankAccount;
 import com.revature.model.UserAccount;
 import com.revature.repo.BankAccountDAO;
@@ -57,7 +58,7 @@ public class BankServicesImplementation implements BankServices
     @Override
     public double viewBalance(BankAccount account)
     {
-
+        return 0;
     }
 
     @Override
@@ -68,5 +69,17 @@ public class BankServicesImplementation implements BankServices
     @Override
     public void viewTransactionHistory(BankAccount account) {
 
+    }
+
+    @Override
+    public void addBankAccount(BankAccount account, UserAccount owner)
+    {
+        bankAccountDAO.insertBankAccount(account, owner);
+    }
+
+    @Override
+    public RevArrayList<BankAccount> getAllBankAccounts(UserAccount owner)
+    {
+        return bankAccountDAO.getAllBankAccounts(owner);
     }
 }

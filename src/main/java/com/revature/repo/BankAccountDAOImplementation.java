@@ -71,52 +71,12 @@ public class BankAccountDAOImplementation implements BankAccountDAO
         }
     }
 
-    @Deprecated
-    public BankAccount getBankAccount(BankAccount account)
-    {
-        String sqlStatement = "select * from \"Bank Accounts\" ba where \"Account Number\" = (?)";
-
-        PreparedStatement preparedStatement;
-
-        try(Connection connection = ConnectionFactory.getConnection())
-        {
-            preparedStatement = connection.prepareStatement(sqlStatement);
-
-            preparedStatement.setString(1, account.getAccountNumber());
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                try
-                {
-                    BankAccount newAccount = new BankAccount(
-                            resultSet.getString("Account Number"),
-                            resultSet.getString("Routing Number"),
-                            resultSet.getDouble("Balance"),
-                            resultSet.getString("Account Type"),
-                            resultSet.getString("Account Name"));
-                    return newAccount;
-                }
-                catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        catch (SQLException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     @Override
-    public RevArrayList<BankAccount> getAllBankAccounts(int ownerId)
+    public RevArrayList<BankAccount> getAllBankAccounts(UserAccount userAccount)
     {
         String sqlStatement = "select * from \"Bank Accounts\" ba " +
                 "inner join \"Bank User Junction\" buj " +
-                "on ba.\"BankID\" = buj.\"BankID\" and buj.\"UserID\" = (?)";
+                "on ba.\"Account Number\" = buj.\"Account Number\" and buj.\"Username\" = ?";
 
         PreparedStatement preparedStatement;
 
@@ -126,7 +86,8 @@ public class BankAccountDAOImplementation implements BankAccountDAO
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
 
-            preparedStatement.setInt(1, ownerId);
+            System.out.println(userAccount.getUsername());
+            preparedStatement.setString(1, userAccount.getUsername());
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next())
@@ -145,6 +106,10 @@ public class BankAccountDAOImplementation implements BankAccountDAO
                 {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
+                }
+                catch (NegativeAmountException exception)
+                {
+                    exception.printStackTrace();
                 }
             }
         }
