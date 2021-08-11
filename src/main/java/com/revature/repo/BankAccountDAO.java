@@ -15,4 +15,6 @@ public interface BankAccountDAO
     RevArrayList<BankAccount> getAllBankAccounts(UserAccount owner);
 
     void updateBankAccount(BankAccount account);
+
+    void addOwner(BankAccount account, UserAccount newOwner);
 }

@@ -4,12 +4,12 @@ public class BankUtilities
 {
     public static String generateAccountNumber()
     {
-        return "" + Math.random()*1000000000;
+        return "" + (int) (Math.random()*1000000000);
     }
 
     public static String generateRoutingNumber()
     {
-        return "" + Math.random()*10000000;
+        return "" + (int) (Math.random()*10000000);
     }
 
     public static String formatIntoCurrency(double number)

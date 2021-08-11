@@ -21,22 +21,26 @@ public class BankMenus
         {
             initialMenu();
             input = scanner.nextLine();
-            switch (input) {
+            System.out.println();
+            switch (input)
+            {
                 case "1":
                     UserAccount foundUser = userServices.getUser(loginMenu());
+                    System.out.println();
                     bankActionsMenuHandler(foundUser);
                     break;
                 case "2":
                     UserAccount currentUser = createNewUserAccountMenu();
                     userServices.addUser(currentUser);
+                    System.out.println();
                     bankActionsMenuHandler(currentUser);
                     break;
                 case "Q":
-                    System.out.println();
                     return;
                 default:
                     System.out.println("Input invalid. Please try again.\n");
             }
+            System.out.println();
         } while(true);
     }
 
@@ -46,6 +50,7 @@ public class BankMenus
         System.out.println("1) Log in");
         System.out.println("2) Create a new account");
         System.out.println("Q) Quit application");
+        System.out.print("Enter selection here: ");
     }
 
     private UserAccount createNewUserAccountMenu()
@@ -65,18 +70,31 @@ public class BankMenus
         {
             bankActionsMenu();
             input = scanner.nextLine();
-            switch (input) {
+            System.out.println();
+            switch (input)
+            {
                 case "1":
                     bankServices.addBankAccount(openNewBankAccountMenu(), currentUser);
+                    System.out.println();
                     break;
                 case "2":
                     viewBalanceMenu(currentUser);
+                    System.out.println();
                     break;
                 case "3":
                     depositIntoBankAccount(currentUser);
+                    System.out.println();
                     break;
                 case "4":
                     withdrawFromBankAccount(currentUser);
+                    System.out.println();
+                    break;
+                case "5":
+                    closeBankAccount(currentUser);
+                    System.out.println();
+                case "6":
+                    addOwner(currentUser);
+                    System.out.println();
                     break;
                 case "Q":
                     System.out.println();
@@ -84,6 +102,7 @@ public class BankMenus
                 default:
                     System.out.println("Input invalid. Please try again.\n");
             }
+            System.out.println();
         } while(true);
     }
 
@@ -94,7 +113,64 @@ public class BankMenus
         System.out.println("2) View the balance of a bank account");
         System.out.println("3) Deposit into a bank account");
         System.out.println("4) Withdraw from a bank account");
+        System.out.println("5) Close a bank account");
+        System.out.println("6) Add owner to account");
         System.out.println("Q) Log out");
+        System.out.print("Enter selection here: ");
+    }
+
+    private void addOwner(UserAccount currentUser)
+    {
+        RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
+        if(accounts.size() <= 0)
+        {
+            System.out.println("You have no accounts.\n");
+            return;
+        }
+        boolean ownerAdded = false;
+        do
+        {
+            System.out.println("Which account would you like to add an owner?");
+            for (int i = 0; i < accounts.size(); i++) {
+                BankAccount currentAccount = accounts.get(i);
+                System.out.println("" + i + ") " +
+                        currentAccount.getAccountNumber() + " " +
+                        currentAccount.getName() + " - " +
+                        currentAccount.getAccountType());
+            }
+            System.out.print("Enter selection here: ");
+            input = scanner.nextLine();
+            try
+            {
+                int integerInput = Integer.parseInt(input);
+                if (integerInput >= accounts.size() || integerInput < 0) {
+                    System.out.println("Invalid input. Please input a number corresponding to an account.\n");
+                }
+                else
+                {
+                    BankAccount accountNewOwner = accounts.get(integerInput);
+                    do
+                    {
+                        System.out.print("Enter the username of the new owner: ");
+                        String newOwnerName = scanner.nextLine();
+                        UserAccount newOwner = userServices.getUser(newOwnerName);
+                        if(newOwner == null)
+                        {
+                            System.out.println("User not found. Please try again.");
+                        }
+                        else
+                        {
+                            bankServices.addOwner(accountNewOwner, newOwner);
+                            ownerAdded = true;
+                        }
+                    } while (!ownerAdded);
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println("Invalid input. Please enter a number.\n");
+            }
+        } while (!ownerAdded);
     }
 
     private void viewBalanceMenu(UserAccount currentUser)
@@ -116,6 +192,7 @@ public class BankMenus
                         currentAccount.getName() + " - " +
                         currentAccount.getAccountType());
             }
+            System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
             {
@@ -158,6 +235,7 @@ public class BankMenus
                         currentAccount.getName() + " - " +
                         currentAccount.getAccountType());
             }
+            System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
             {
@@ -195,6 +273,47 @@ public class BankMenus
         } while (!deposited);
     }
 
+    private void closeBankAccount(UserAccount currentUser)
+    {
+        RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
+        if(accounts.size() <= 0)
+        {
+            System.out.println("You have no accounts.\n");
+            return;
+        }
+        boolean accountClosed = false;
+        do
+        {
+            System.out.println("Which account would you like to close?");
+            for (int i = 0; i < accounts.size(); i++) {
+                BankAccount currentAccount = accounts.get(i);
+                System.out.println("" + i + ") " +
+                        currentAccount.getAccountNumber() + " " +
+                        currentAccount.getName() + " - " +
+                        currentAccount.getAccountType());
+            }
+            System.out.print("Enter selection here: ");
+            input = scanner.nextLine();
+            try
+            {
+                int integerInput = Integer.parseInt(input);
+                if (integerInput >= accounts.size() || integerInput < 0) {
+                    System.out.println("Invalid input. Please input a number corresponding to an account.\n");
+                }
+                else
+                {
+                    BankAccount accountToClose = accounts.get(integerInput);
+                    bankServices.deleteBankAccount(accountToClose);
+                    accountClosed = true;
+                }
+            }
+            catch(NumberFormatException e)
+            {
+                System.out.println("Invalid input. Please enter a number.\n");
+            }
+        } while (!accountClosed);
+    }
+
     private void withdrawFromBankAccount(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
@@ -214,6 +333,7 @@ public class BankMenus
                         currentAccount.getName() + " - " +
                         currentAccount.getAccountType());
             }
+            System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
             {

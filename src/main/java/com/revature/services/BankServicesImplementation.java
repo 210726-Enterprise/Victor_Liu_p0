@@ -62,8 +62,9 @@ public class BankServicesImplementation implements BankServices
     }
 
     @Override
-    public void addOwner(BankAccount account, UserAccount newOwner) {
-
+    public void addOwner(BankAccount account, UserAccount newOwner)
+    {
+        bankAccountDAO.addOwner(account, newOwner);
     }
 
     @Override
@@ -81,5 +82,11 @@ public class BankServicesImplementation implements BankServices
     public RevArrayList<BankAccount> getAllBankAccounts(UserAccount owner)
     {
         return bankAccountDAO.getAllBankAccounts(owner);
+    }
+
+    @Override
+    public void deleteBankAccount(BankAccount account)
+    {
+        bankAccountDAO.deleteBankAccount(account);
     }
 }

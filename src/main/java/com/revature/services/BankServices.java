@@ -24,4 +24,6 @@ public interface BankServices
     void addBankAccount(BankAccount account, UserAccount owner);
 
     RevArrayList<BankAccount> getAllBankAccounts(UserAccount owner);
+
+    void deleteBankAccount(BankAccount account);
 }

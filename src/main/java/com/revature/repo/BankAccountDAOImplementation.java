@@ -140,4 +140,24 @@ public class BankAccountDAOImplementation implements BankAccountDAO
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void addOwner(BankAccount account, UserAccount newOwner)
+    {
+        String sqlStatement = "insert into \"Bank User Junction\" (\"Account Number\" , \"Username\") values (?,?)";
+
+        try(Connection connection = ConnectionFactory.getConnection())
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, account.getAccountNumber());
+            preparedStatement.setString(2, newOwner.getUsername());
+
+            preparedStatement.execute();
+        }
+        catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
