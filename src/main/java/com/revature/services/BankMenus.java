@@ -8,14 +8,28 @@ import com.revature.model.UserAccount;
 import com.revature.util.BankUtilities;
 import java.util.Scanner;
 
+/**
+ * handles presentation layer (displays menus, handles user input, and passes input on to service layer)
+ */
 public class BankMenus
 {
+    /**
+     * service objects
+     */
     private final UserServices userServices = new UserServicesImplementation();
     private final BankServices bankServices = new BankServicesImplementation();
+
+    /**
+     * user input-related attributes
+     */
     private final Scanner scanner = new Scanner(System.in);
     private String input = "";
 
-    public void consoleMenuHandler()
+    /**
+     * entry point into console GUI
+     * displays initial menu and handles user input
+     */
+    public void runInitialMenu()
     {
         do
         {
@@ -44,6 +58,9 @@ public class BankMenus
         } while(true);
     }
 
+    /**
+     * displays initial menu choices
+     */
     private void initialMenu()
     {
         System.out.println("Would you like to log in or create a new user account? (Select the number/letter of your choice)");
@@ -53,6 +70,10 @@ public class BankMenus
         System.out.print("Enter selection here: ");
     }
 
+    /**
+     * take in a username and password and creates a new user from that
+     * @return a new user account
+     */
     private UserAccount createNewUserAccountMenu()
     {
         System.out.print("Enter a new username: ");
@@ -64,6 +85,11 @@ public class BankMenus
         return new UserAccount(username, password);
     }
 
+    /**
+     * entry point into bank-related services.
+     * parses user input and decides the next menu to show
+     * @param currentUser the currently logged in user
+     */
     private void bankActionsMenuHandler(UserAccount currentUser)
     {
         do
@@ -106,6 +132,9 @@ public class BankMenus
         } while(true);
     }
 
+    /**
+     * displays options for viewing and modifying bank accounts
+     */
     private void bankActionsMenu()
     {
         System.out.println("What would you like to do?");
@@ -119,25 +148,52 @@ public class BankMenus
         System.out.print("Enter selection here: ");
     }
 
+    /**
+     * helper method for displaying a user's bank accounts
+     * @param accountRevArrayList the logged-in user's bank accounts
+     */
+    private void displayAccountList(RevArrayList<BankAccount> accountRevArrayList)
+    {
+        for (int i = 0; i < accountRevArrayList.size(); i++) {
+            BankAccount currentAccount = accountRevArrayList.get(i);
+            System.out.println("" + i + ") " +
+                    currentAccount.getAccountNumber() + " " +
+                    currentAccount.getName() + " - " +
+                    currentAccount.getAccountType());
+        }
+    }
+
+    /**
+     * helper method for checking if a user has accounts
+     * @param accountRevArrayList the logged-in user's bank accounts
+     * @return true if a user has bank accounts
+     */
+    private boolean hasAccounts(RevArrayList<BankAccount> accountRevArrayList)
+    {
+        if(accountRevArrayList.size() <= 0)
+        {
+            System.out.println("You have no accounts.\n");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * menu for adding an existing user as an owner of a joint account
+     * @param currentUser the currently logged in user
+     */
     private void addOwner(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
-        if(accounts.size() <= 0)
+        if(hasAccounts(accounts))
         {
-            System.out.println("You have no accounts.\n");
             return;
         }
         boolean ownerAdded = false;
         do
         {
             System.out.println("Which account would you like to add an owner?");
-            for (int i = 0; i < accounts.size(); i++) {
-                BankAccount currentAccount = accounts.get(i);
-                System.out.println("" + i + ") " +
-                        currentAccount.getAccountNumber() + " " +
-                        currentAccount.getName() + " - " +
-                        currentAccount.getAccountType());
-            }
+            displayAccountList(accounts);
             System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
@@ -173,25 +229,22 @@ public class BankMenus
         } while (!ownerAdded);
     }
 
+    /**
+     * menu for viewing the balance of any bank account
+     * @param currentUser the currently logged-in user
+     */
     private void viewBalanceMenu(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
-        if(accounts.size() <= 0)
+        if(hasAccounts(accounts))
         {
-            System.out.println("You have no accounts.\n");
             return;
         }
         boolean accountViewed = false;
         do
         {
             System.out.println("Which account would you like to view?");
-            for (int i = 0; i < accounts.size(); i++) {
-                BankAccount currentAccount = accounts.get(i);
-                System.out.println("" + i + ") " +
-                        currentAccount.getAccountNumber() + " " +
-                        currentAccount.getName() + " - " +
-                        currentAccount.getAccountType());
-            }
+            displayAccountList(accounts);
             System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
@@ -216,25 +269,22 @@ public class BankMenus
         } while (!accountViewed);
     }
 
+    /**
+     * menu for depositing into a bank account
+     * @param currentUser the currently logged-in user
+     */
     private void depositIntoBankAccount(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
-        if(accounts.size() <= 0)
+        if(hasAccounts(accounts))
         {
-            System.out.println("You have no accounts.\n");
             return;
         }
         boolean deposited = false;
         do
         {
             System.out.println("Which account would you deposit into?");
-            for (int i = 0; i < accounts.size(); i++) {
-                BankAccount currentAccount = accounts.get(i);
-                System.out.println("" + i + ") " +
-                        currentAccount.getAccountNumber() + " " +
-                        currentAccount.getName() + " - " +
-                        currentAccount.getAccountType());
-            }
+            displayAccountList(accounts);
             System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
@@ -273,25 +323,22 @@ public class BankMenus
         } while (!deposited);
     }
 
+    /**
+     * menu for closing a bank account
+     * @param currentUser the currently logged-in user
+     */
     private void closeBankAccount(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
-        if(accounts.size() <= 0)
+        if(hasAccounts(accounts))
         {
-            System.out.println("You have no accounts.\n");
             return;
         }
         boolean accountClosed = false;
         do
         {
             System.out.println("Which account would you like to close?");
-            for (int i = 0; i < accounts.size(); i++) {
-                BankAccount currentAccount = accounts.get(i);
-                System.out.println("" + i + ") " +
-                        currentAccount.getAccountNumber() + " " +
-                        currentAccount.getName() + " - " +
-                        currentAccount.getAccountType());
-            }
+            displayAccountList(accounts);
             System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
@@ -314,25 +361,22 @@ public class BankMenus
         } while (!accountClosed);
     }
 
+    /**
+     * menu for withdrawing from an account
+     * @param currentUser the currently logged-in user
+     */
     private void withdrawFromBankAccount(UserAccount currentUser)
     {
         RevArrayList<BankAccount> accounts = bankServices.getAllBankAccounts(currentUser);
-        if(accounts.size() <= 0)
+        if(hasAccounts(accounts))
         {
-            System.out.println("You have no accounts.\n");
             return;
         }
         boolean withdrawed = false;
         do
         {
             System.out.println("Which account would you withdraw from?");
-            for (int i = 0; i < accounts.size(); i++) {
-                BankAccount currentAccount = accounts.get(i);
-                System.out.println("" + i + ") " +
-                        currentAccount.getAccountNumber() + " " +
-                        currentAccount.getName() + " - " +
-                        currentAccount.getAccountType());
-            }
+            displayAccountList(accounts);
             System.out.print("Enter selection here: ");
             input = scanner.nextLine();
             try
@@ -375,6 +419,10 @@ public class BankMenus
         } while (!withdrawed);
     }
 
+    /**
+     * menu for opening a new bank account
+     * @return the currently logged-in user
+     */
     private BankAccount openNewBankAccountMenu()
     {
         System.out.print("Enter they type of account you want to open: ");
@@ -412,18 +460,30 @@ public class BankMenus
         return bankAccount;
     }
 
+    /**
+     * helper method for getting a username
+     * @return
+     */
     private String enterUsername()
     {
         System.out.print("Enter your username: ");
         return scanner.nextLine();
     }
 
+    /**
+     * helper method for getting a password
+     * @return
+     */
     private String enterPassword()
     {
         System.out.print("Enter your password: ");
         return scanner.nextLine();
     }
 
+    /**
+     * menu for logging in
+     * @return the valid username
+     */
     private String loginMenu()
     {
         UserAccount user = null;

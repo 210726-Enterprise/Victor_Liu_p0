@@ -6,6 +6,6 @@ public class Driver
     public static void main(String[] args)
     {
         BankMenus menus = new BankMenus();
-        menus.consoleMenuHandler();
+        menus.runInitialMenu();
     }
 }

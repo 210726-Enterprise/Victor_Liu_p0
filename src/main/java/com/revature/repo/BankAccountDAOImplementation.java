@@ -85,7 +85,7 @@ public class BankAccountDAOImplementation implements BankAccountDAO
         try(Connection connection = ConnectionFactory.getConnection())
         {
             preparedStatement = connection.prepareStatement(sqlStatement);
-            
+
             preparedStatement.setString(1, userAccount.getUsername());
 
             ResultSet resultSet = preparedStatement.executeQuery();
